@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energiadiagnosztikai Kérdőív - Rási András</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            color: #7f77dd;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #7f77dd, #534ab7);
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            border-color: #7f77dd;
+        }
+
+        .tool-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .tool-card h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .tool-card p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .tool-link {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #7f77dd 0%, #534ab7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tool-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(127, 119, 221, 0.3);
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, #f0f5ff 0%, #f5f3ff 100%);
+            border-left: 4px solid #7f77dd;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .info-section h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .info-section p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .info-section ul {
+            margin-left: 20px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .footer-name {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .footer-title {
+            font-size: 14px;
+            color: #7f77dd;
+            font-weight: 500;
+        }
+
+        .step-list {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-list h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #7f77dd 0%, #534ab7 100%);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .header p {
+                font-size: 16px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Energiadiagnosztikai Kérdőív</h1>
+            <p>Fedezd fel az energia-rendszered jelenlegi állapotát</p>
+            <div class="divider"></div>
+            <div class="header-subtitle">Rási András — Test- és Lélekgyógyász</div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <h3>🔮 Miről szól ez?</h3>
+            <p>Az Energiadiagnosztikai Kérdőív segít megérteni, hogy az energia-rendszered mely csatornái szorulnak figyelemre. A teszt <strong>szubjektív önértékelésen</strong> alapul, és tájékoztató célokat szolgál.</p>
+            <p style="margin-top: 15px;"><strong>Fontos:</strong> Ez a kérdőív nem helyettesíti az orvosi vagy pszichológiai tanácsadást. Súlyos tüneteknél mindig konzultálj egy szakemberrel.</p>
+        </div>
+
+        <!-- Tools Grid -->
+        <div class="tools-grid">
+            <!-- Kérdőív Card -->
+            <div class="tool-card">
+                <div class="tool-icon">📋</div>
+                <h2>Energiadiagnosztikai Kérdőív</h2>
+                <p>Válaszolj 15 egyszerű kérdésre az energia-rendszered öt szintjéről. A kérdőív körülbelül 5-10 perc alatt kitölthető, majd az eredményed automatikusan megérkezik hozzánk.</p>
+                <a href="energia_kérdőív.html" class="tool-link">Kérdőív kitöltése →</a>
+            </div>
+        </div>
+
+        <!-- Workflow Section -->
+        <div class="step-list">
+            <h3>📍 Hogyan működik?</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <p><strong>Kérdőív kitöltése</strong> — Válaszolj az összes kérdésre az 1-5 skálán (az "1" kevésbé jellemző rám, az "5" nagyon jellemző rám), add meg a nevedet és emailcímedet, majd küldöm az eredményt.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <p><strong>Adatok érkezése</strong> — Az eredményed automatikusan megérkezik hozzánk. Ebben az időben feldolgozzuk az adataidat.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <p><strong>Személyre szabott kiértékelés</strong> — Generálunk egy részletezett PDF kiértékelést, mely tartalmazza az energia-blokk elemzést és javaslatokat.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <p><strong>Kapcsolatfelvétel</strong> — A kiértékelést messengeren elküldjük az engagement kérdésekkel. Ha megírod nekem a válaszokat, akkor azok alapján léphetünk még egyet előre.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Info -->
+        <div class="info-section">
+            <h3>⚖️ Jogi nyilatkozat</h3>
+            <p>Az Energiadiagnosztikai Kérdőív <strong>csupán tájékoztató eszköz</strong>, és nem helyettesíti az orvosok, pszichológusok, vagy egyéb egészségügyi szakemberek által végzett diagnosztikai vagy terápiás tevékenységeket.</p>
+            <p style="margin-top: 15px;"><strong>Kötelező orvosi konzultáció szükséges, ha:</strong></p>
+            <ul>
+                <li>Tartós fizikai fájdalomra, krónikus betegségre panaszkodsz</li>
+                <li>Súlyos vagy egyre rosszabbodó depresszió, szorongás vagy mentális zavarokat érzékelsz</li>
+                <li>Önkárosítási vagy öngyilkossági gondolataid vannak</li>
+                <li>Bármely tünet jelentősen akadályozza az életed</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-name">Rási András</div>
+            <div class="footer-title">Test- és Lélekgyógyász</div>
+            <p style="margin-top: 20px;">...szeretettel...</p>
+        </div>
+    </div>
+</body>
+</html>
