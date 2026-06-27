@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energiadiagnosztikai kérdőív</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7f77dd 0%, #534ab7 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .progress-wrapper {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e8e8e8;
+            border-radius: 3px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7f77dd, #534ab7);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-block {
+            margin-bottom: 32px;
+            display: none;
+        }
+
+        .question-block.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .answer-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .answer-btn {
+            flex: 1;
+            padding: 12px 0;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .answer-btn:hover {
+            border-color: #7f77dd;
+            background: #f5f3ff;
+            color: #7f77dd;
+        }
+
+        .answer-btn.selected {
+            background: linear-gradient(135deg, #7f77dd 0%, #534ab7 100%);
+            color: white;
+            border-color: #534ab7;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn-prev, .btn-next {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .btn-prev:hover:not(:disabled), .btn-next:hover:not(:disabled) {
+            border-color: #7f77dd;
+            background: #f5f3ff;
+            color: #7f77dd;
+        }
+
+        .btn-prev:disabled, .btn-next:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .contact-section {
+            background: #f9f7ff;
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .contact-section.active {
+            display: block;
+        }
+
+        .contact-section h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7f77dd;
+            background: #f5f3ff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7f77dd 0%, #534ab7 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(127, 119, 221, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-section {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .results-section p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #7f77dd;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .step-indicator {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .answer-buttons {
+                gap: 6px;
+            }
+
+            .answer-btn {
+                font-size: 12px;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Energiadiagnosztikai kérdőív</h1>
+            <p>Fedezd fel, melyik energia-blokk szorul helyreállításra.</p>
+        </div>
+
+        <div class="content">
+            <form id="kérdőívForm" method="POST" action="https://formsubmit.co/andrasgyogyit@gmail.com">
+                <!-- Progress Bar -->
+                <div class="progress-wrapper">
+                    <span class="progress-text">Haladás</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text"><span id="currentStep">1</span>/15</span>
+                </div>
+
+                <!-- Step Indicator -->
+                <div class="step-indicator" id="stepIndicator">1. kérdés a 15-ből</div>
+
+                <!-- Questions -->
+                <div id="questionsContainer"></div>
+
+                <!-- Contact Section -->
+                <div class="contact-section" id="contactSection">
+                    <h3>Az eredmény elküldése</h3>
+                    <div class="form-group">
+                        <label for="name">Neved *</label>
+                        <input type="text" id="name" name="name" required placeholder="Írd be a nevedet">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email címed *</label>
+                        <input type="email" id="email" name="email" required placeholder="pl. example@gmail.com">
+                    </div>
+                    <input type="hidden" name="_captcha" value="false">
+                   <input type="hidden" name="_captcha" value="false">                </div>
+
+                <!-- Navigation -->
+                <div class="navigation" id="navigationButtons">
+                    <button type="button" class="btn-prev" id="btnPrev" onclick="previousQuestion()" disabled>← Vissza</button>
+                    <button type="button" class="btn-next" id="btnNext" onclick="nextQuestion()">Tovább →</button>
+                    <button type="submit" class="submit-btn hidden" id="btnSubmit">Eredmény elküldése</button>
+                </div>
+            </form>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <h2>Köszönjük!</h2>
+                <p>Az eredményed sikeres elküldésre került.</p>
+                <div class="spinner"></div>
+                <p>Az értékelésed hamarosan megérkezik!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, text: "Milyen gyakran érzel fizikai fáradtságot, amely nem indokolt a tevékenységeddel?", cat: "fizikai" },
+            { id: 2, text: "Mennyire jellemző rád a hátfájás, nyakmerevség vagy más krónikus fájdalom?", cat: "fizikai" },
+            { id: 3, text: "Mennyire van szükséged több alvásra vagy pihenésre, mint amennyit kapsz?", cat: "fizikai" },
+            { id: 4, text: "Milyen gyakran érzel szorongást vagy negatív érzelmeket, amelyeket nehéz kezelni?", cat: "érzelmi" },
+            { id: 5, text: "Mennyire jellemző rád az érzelmi kimerültség vagy érzelmi túlterhelés?", cat: "érzelmi" },
+            { id: 6, text: "Milyen gyakran érzel magadban bizonytalanságot vagy, hogy nem értékelnek?", cat: "érzelmi" },
+            { id: 7, text: "Mennyire nehéz számodra reggel felkelni és energikusan elkezdeni a napod?", cat: "motiváció" },
+            { id: 8, text: "Mennyire hiányzik a motiváció azokhoz a dolgokhoz, amelyeket szeretnél csinálni?", cat: "motiváció" },
+            { id: 9, text: "Mennyire jellemző rád a tehetetlenség vagy az akadályozottság érzése?", cat: "motiváció" },
+            { id: 10, text: "Milyen gyakran érzel mentális zűrzavart vagy szétszórtságot?", cat: "szellemi" },
+            { id: 11, text: "Mennyire nehéz számodra koncentrálni vagy egyidejűleg több dologra figyelni?", cat: "szellemi" },
+            { id: 12, text: "Mennyire érzed, hogy elvesztetted az élet iránti tiszta látásodat vagy célod?", cat: "szellemi" },
+            { id: 13, text: "Mennyire érzel elszakadtságot az intuíciódtól vagy a belső hangodtól?", cat: "spirituális" },
+            { id: 14, text: "Mennyire érzel életcélbeli zűrzavart vagy értelmetlenséget?", cat: "spirituális" },
+            { id: 15, text: "Mennyire hiányzik az összhang és az egyensúly az életed különböző területei között?", cat: "spirituális" }
+        ];
+
+        let currentStep = 1;
+        const answers = {};
+
+        function initQuestions() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((q, index) => {
+                const block = document.createElement('div');
+                block.className = `question-block ${index === 0 ? 'active' : ''}`;
+                block.innerHTML = `
+                    <div class="question-number">Kérdés ${q.id}</div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="answer-buttons">
+                        ${[1, 2, 3, 4, 5].map(val => `
+                            <button type="button" class="answer-btn" onclick="selectAnswer(${q.id}, ${val}, this)" data-question="${q.id}" data-value="${val}">
+                                ${val}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <input type="hidden" name="q${q.id}" value="">
+                `;
+                container.appendChild(block);
+            });
+        }
+
+        function selectAnswer(questionId, value, button) {
+            answers[questionId] = value;
+            document.querySelector(`input[name="q${questionId}"]`).value = value;
+
+            const buttons = button.parentElement.querySelectorAll('.answer-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        }
+
+        function nextQuestion() {
+if (!answers[currentStep]) {
+    alert('Kérlek válaszolj a kérdésre!');
+    return;
+}
+            if (currentStep < questions.length) {
+                document.querySelectorAll('.question-block')[currentStep - 1].classList.remove('active');
+                currentStep++;
+                document.querySelectorAll('.question-block')[currentStep - 1].classList.add('active');
+                updateProgress();
+            } else if (currentStep === questions.length) {
+                showContactSection();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentStep > 1) {
+                document.querySelectorAll('.question-block')[currentStep - 1].classList.remove('active');
+                currentStep--;
+                document.querySelectorAll('.question-block')[currentStep - 1].classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentStep').textContent = currentStep;
+            document.getElementById('stepIndicator').textContent = `${currentStep}. kérdés a 15-ből`;
+            document.getElementById('btnPrev').disabled = currentStep === 1;
+            document.getElementById('btnNext').disabled = false;
+        }
+
+        function showContactSection() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.getElementById('contactSection').classList.add('active');
+            document.getElementById('stepIndicator').textContent = 'Utolsó lépés';
+            document.getElementById('btnNext').classList.add('hidden');
+            document.getElementById('btnPrev').classList.add('hidden');
+            document.getElementById('btnSubmit').classList.remove('hidden');
+        }
+
+        document.getElementById('kérdőívForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const allAnswered = Object.keys(answers).length === questions.length;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if (!allAnswered || !name || !email) {
+        alert('Kérjük, válaszolj az összes kérdésre és add meg az adataidat!');
+        return;
+    }
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            document.getElementById('kérdőívForm').style.display = 'none';
+            document.getElementById('resultsSection').classList.add('active');
+setTimeout(() => {
+        document.querySelector('.spinner').style.display = 'none';
+    }, 3000);
+        } else {
+            alert('Hiba történt az elküldés során.');
+        }
+    } catch (error) {
+        alert('Nem sikerült elküldeni az űrlapot.');
+    }
+        });
+
+        // Initialize
+        initQuestions();
+        updateProgress();
+    </script>
+</body>
+</html>
